@@ -5,4 +5,4 @@ This will ulimately be published as a How To on Poynter.org. Link to come. It is
 
 The code is heavily commented and directed toward absolute beginners.
 
-##Warning: It's a work in progress right now (aka it doesn't work)
+###Warning: It's a work in progress right now (aka it doesn't work)
