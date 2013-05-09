@@ -2,7 +2,9 @@
 
 A set of python functions to help you store tweets gathered from a Twitter search in a SQLite database for later analysis.
 
-Requires python-twitter, but you can sub out your own method to query Twitter's API.
+Requires python-twitter, but you can sub out your own method to query Twitter's API if you want. 
+
+NOTE: Be sure to change the search term below. You don't want it to be YOUR-TWEET-HERE. You won't find much.
 
 """
 
@@ -36,7 +38,7 @@ def insert_tweets():
     # Create an iterator
     for iteration in page:
         # Query the search API. The search term is in the quotes, per_page means how many tweets do you want when you get the page, and the page is the page in the paginator.
-        tweets = api.GetSearch("drones", per_page=100, page=iteration)
+        tweets = api.GetSearch("YOUR-TERM-HERE", per_page=100, page=iteration)
         # Now we're going to loop through our list of tweets.
         for tweet in tweets:
             # But wait -- we don't want duplicates! So lets check if it exists in the database first. First, lets get the ID of the tweet.
@@ -55,11 +57,12 @@ def insert_tweets():
                 tweet_date = datetime(tweet_date.tm_year, tweet_date.tm_mon, tweet_date.tm_mday, tweet_date.tm_hour, tweet_date.tm_min, tweet_date.tm_sec)
                 user = tweet.user.screen_name
                 tweet_text = tweet.text
-                # Now insert it into the database
+                # Insert it into the database
                 c.execute('INSERT INTO tweets(tweet_id, created_date, text, screen_name) VALUES (?,?,?,?)', (long(tweet.id), tweet_date, tweet_text, user))
+                # And now save it.
                 conn.commit()
-        # Now, because we're decent people, we're going to give Twitter's servers a break. Leaving a few seconds between requests is just good etiquette when scraping or pulling data from an API. Here, we leave three seconds between requests.
-        time.sleep(3)
+        # Now, because we're decent people, we're going to give Twitter's servers a break. Leaving a few seconds between requests is just good etiquette when scraping or pulling data from an API. Here, we leave five seconds between requests.
+        time.sleep(5)
 
 
 # Now it's party time. Here were're going to check if we've got a database called tweets.db, and if we don't, call the function to create it and then call the function to shove some tweets in it. If it DOES exist, lets just call the function to shove tweets in it.
