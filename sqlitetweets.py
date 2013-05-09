@@ -20,9 +20,9 @@ def create_table():
     c.executescript('''CREATE TABLE tweets(
         "id" integer NOT NULL PRIMARY KEY, 
         "tweet_id" bigint NOT NULL, 
-        "created_date" datetime NOT NULL,
+        "created_date" timestamp NOT NULL,
         "text" text NOT NULL,
-        "screen_name" varchar(100) NOT NULL);''')
+        "screen_name" text NOT NULL);''')
     print "Table created"
         
 def insert_tweets():
@@ -44,7 +44,7 @@ def insert_tweets():
             # Now, lets write some SQL.
             c.execute('SELECT * FROM tweets WHERE id=?', (tid,))
             # The logic here is a little backwards. It says if you get something when you execute our SQL, that means it already exists, so continue on. If you DON'T get something, lets insert some tweets.
-            if c.fetchone():
+            if c.fetchone() != None:
                 continue
             else:
                 # Dates are a pain in the ass because no one agrees on how to store them. So these lines just deal with that and turn them into python date objects that we can deal with in a civilized manner.
@@ -57,6 +57,7 @@ def insert_tweets():
                 tweet_text = tweet.text
                 # Now insert it into the database
                 c.execute('INSERT INTO tweets(tweet_id, created_date, text, screen_name) VALUES (?,?,?,?)', (long(tweet.id), tweet_date, tweet_text, user))
+                conn.commit()
         # Now, because we're decent people, we're going to give Twitter's servers a break. Leaving a few seconds between requests is just good etiquette when scraping or pulling data from an API. Here, we leave three seconds between requests.
         time.sleep(3)
 
