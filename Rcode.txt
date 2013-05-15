@@ -1,0 +1,5 @@
+> library("RSQLite")
+> con <- dbConnect(drv="SQLite", dbname="/Users/mwaite3/Dropbox/Documents/writing/Poynter/TweetsWithR/tweets.db")
+> tables <- dbListTables(con)
+> tweetframe <- dbReadTable(con, "tweets") 
+> install.packages('tm')
