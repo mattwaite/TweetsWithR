@@ -38,7 +38,7 @@ def insert_tweets():
     # Create an iterator
     for iteration in page:
         # Query the search API. The search term is in the quotes, per_page means how many tweets do you want when you get the page, and the page is the page in the paginator.
-        tweets = api.GetSearch("YOUR-TERM-HERE", per_page=100, page=iteration)
+        tweets = api.GetSearch("drones", per_page=100, page=iteration)
         # Now we're going to loop through our list of tweets.
         for tweet in tweets:
             # But wait -- we don't want duplicates! So lets check if it exists in the database first. First, lets get the ID of the tweet.
